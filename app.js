@@ -24,6 +24,7 @@ app.use("/public", stack.middleware.static(__dirname+"/build"));
 
 app.useBefore("router", function localBase(req, res, next) {
   res.locals.base = req.base;
+  res.locals.resolve = req.resolve;
   next();
 });
 
