@@ -28,15 +28,20 @@ app.useBefore("router", function localBase(req, res, next) {
   next();
 });
 
+app.useBefore("router", function bareView(req, res, next) {
+  res.locals.bare = !!req.query.bare;
+  next();
+});
+
 /**
  * Routes
  */
 app.get("/", function(req, res, next){
-  res.render("index");
+  res.render("login", {title: "Login"});
 });
 
 app.get("/signup", function(req, res, next){
-  res.render("signup");
+  res.render("signup", {title: "Signup"});
 });
 
 app.post("/", function(req, res, next) {

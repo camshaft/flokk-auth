@@ -1,7 +1,7 @@
 !!!
 html(lang="en")
   head
-    title Login | FLOKK
+    title #{title} | FLOKK
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     meta(name="author", content="The Flokk, LLC")
@@ -10,6 +10,8 @@ html(lang="en")
   body
     #wrap
       #main.container
+        if !bare
+          include partials/navbar
         block content
       #push
     footer
