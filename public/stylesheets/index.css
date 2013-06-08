@@ -1,0 +1,49 @@
+@media (min-width: 768px) {
+  .form-flokk {
+    max-width: 500px;
+    padding: 19px 29px 29px;
+    margin: 10px auto 20px;
+    border: 3px solid #e5e5e5;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  }
+}
+
+@media (min-height: 575px) {
+  .form-signin {
+    margin: 50px auto;
+  }
+}
+@media (min-height: 686px) {
+  .form-signin {
+    margin: 130px auto;
+  }
+}
+
+.social-login {
+  text-align: center;
+}
+
+.btn-facebook {
+  font-family: "Helvetica Neue";
+  background: url(http://www.underconsideration.com/brandnew/archives/facebook_logo_detail.gif) left center no-repeat, #3b5998;
+  background-size: contain;
+  padding-left: 30px;
+  color: white;
+  display: inline-block;
+}
+
+.btn-facebook:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

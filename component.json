@@ -1,0 +1,22 @@
+{
+  "name": "flokk-auth",
+  "repo": "CamShaft/flokk-auth",
+  "description": "Flokk auth",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "flokk/theme-origami": "*",
+    "CamShaft/bootstrap-navbar": "*",
+    "CamShaft/bootstrap-navs": "*",
+    "CamShaft/bootstrap-responsive": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "public/javascripts/index.js",
+  "scripts": [
+    "public/javascripts/index.js"
+  ],
+  "styles": [
+    "public/stylesheets/index.css"
+  ]
+}

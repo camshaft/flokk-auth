@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  include partials/navbar
+  
+  .span6.offset3
+    form.form-signin.form-flokk(method="post", action="#{base}/")
+      h2 Signup
+      p You're seconds away from something awesome.
+      hr
+      .social-login
+        a(href="#{base}/facebook").btn.btn-facebook Signup with Facebook
+      hr
+      input.input-block-level(type="email", placeholder="Email", name="email", required="true")
+      input.input-block-level(type="password", placeholder="Password", name="password", required="true")
+      input.input-block-level(type="text", placeholder="Name (optional)", name="name")
+      button.btn.btn-large.btn-action(type="submit") START FLOKKING
+      hr
+      p Already have an account? 
+        a(href="#{base}/") Come on in!
