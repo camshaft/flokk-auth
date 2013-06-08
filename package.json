@@ -12,6 +12,10 @@
   },
   "author": "Cameron Bytheway <cameron@theflokk.com>",
   "license": "MIT",
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.x.x"
+  },
   "dependencies": {
     "simple-stack-common": "~0.1.6",
     "startup": "~0.1.12",
