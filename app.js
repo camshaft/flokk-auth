@@ -1,7 +1,8 @@
 /**
  * Module exports
  */
-var stack = require("simple-stack-common");
+var stack = require("simple-stack-common")
+  , envs = require("envs");
 
 /**
  * Expose the app
@@ -9,13 +10,21 @@ var stack = require("simple-stack-common");
 var app = module.exports = stack();
 
 /**
+ * Defines
+ */
+var SITE_URL = envs("SITE_URL", "http://theflokk.com");
+
+/**
  * Configure the app
  */
 app.set("view engine", "jade");
 
+/**
+ * Expose the site url to the views
+ */
 app.locals({
-  site: process.env.SITE || "http://www.theflokk.com"
-})
+  site: SITE_URL
+});
 
 /**
  * Serve the built assets
@@ -25,11 +34,6 @@ app.use("/public", stack.middleware.static(__dirname+"/build"));
 app.useBefore("router", function localBase(req, res, next) {
   res.locals.base = req.base;
   res.locals.resolve = req.resolve;
-  next();
-});
-
-app.useBefore("router", function bareView(req, res, next) {
-  res.locals.bare = !!req.query.bare;
   next();
 });
 
