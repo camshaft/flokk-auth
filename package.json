@@ -19,10 +19,14 @@
   "dependencies": {
     "simple-stack-common": "~0.1.6",
     "startup": "~0.1.12",
-    "passport": "~0.1.17",
-    "passport-facebook": "~0.1.5",
     "component": "~0.16.3",
     "jade": "~0.31.2",
-    "superagent": "~0.14.7"
+    "superagent": "~0.14.7",
+    "envs": "~0.1.1",
+    "consulate-facebook": "consulate/consulate-facebook",
+    "consulate-google": "consulate/consulate-google",
+    "consulate": "consulate/consulate",
+    "consulate-scrypt": "consulate/consulate-scrypt",
+    "consulate-simple-secrets": "consulate/consulate-simple-secrets#scope-compression"
   }
 }

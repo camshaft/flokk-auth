@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .span12
+    h2 A wild #{err.name} appears!
+    if dev
+      pre= err.stack || err
+    else
+      p This error has been reported and will (hopefully) be fixed soon!
