@@ -8,8 +8,8 @@ var stack = require('simple-stack-common')
   , scrypt = require('consulate-scrypt')
   , facebook = require('consulate-facebook')
   , google = require('consulate-google')
+  , scopes = require('consulate-scopes-env')
   , db = require('./lib/database')
-  , scopes = require('./lib/scopes')
   , env = require('envs');
 
 /**
@@ -88,8 +88,17 @@ app.plugin(facebook({
 //   returnURL: env('GOOGLE_RETURN_URL'),
 //   realm: env('GOOGLE_REALM')
 // }, function(identifier, profile, done) {
-//   // TODO store the profile in the db and lookup a 'flokk' user
-//   done(null, profile);
+//   db.getUserByGoogle(profile.id, function(err, user) {
+//     if (err) return done(err);
+//     if (user) return done(null, user);
+
+//     db.createUser({
+//       google: profile.id,
+//       username: profile.username,
+//       name: profile.displayName,
+//       emails: profile.emails
+//     }, done);
+//   });
 // }));
 
 /**

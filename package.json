@@ -27,6 +27,7 @@
     "consulate-google": "consulate/consulate-google",
     "consulate": "consulate/consulate",
     "consulate-scrypt": "consulate/consulate-scrypt",
-    "consulate-simple-secrets": "consulate/consulate-simple-secrets#scope-compression"
+    "consulate-simple-secrets": "consulate/consulate-simple-secrets",
+    "consulate-scopes-env": "consulate/consulate-scopes-env"
   }
 }
