@@ -4,12 +4,14 @@
 
 var stack = require('simple-stack-common')
   , consulate = require('consulate')
-  , ss = require('consulate-simple-secrets')
+  , token = require('consulate-simple-secrets')
+  , authcode = require('consulate-authcode-simple-secrets')
+  , authcodeRedis = require('consulate-authcode-simple-secrets-redis')
   , scrypt = require('consulate-scrypt')
   , facebook = require('consulate-facebook')
   , google = require('consulate-google')
   , scopes = require('consulate-scopes-env')
-  , db = require('./lib/database')
+  , flokk = require('./lib/api')
   , env = require('envs');
 
 /**
@@ -18,8 +20,7 @@ var stack = require('simple-stack-common')
 
 var app = consulate({
   session: {
-    secret: env('COOKIE_SECRET', 'flokk rocks'),
-    key: '_oauth2_session'
+    secret: env('COOKIE_SECRET', 'flokk rocks')
   }
 });
 
@@ -34,17 +35,26 @@ app.set('view engine', 'jade');
  */
 
 app.locals({
-  site: env('SITE_URL', 'http://theflokk.com'),
+  site: env('SITE_URL', 'https://www.theflokk.com'),
   dev: env('NODE_ENV') === 'development'
 });
 
 /**
- * Register the simple-secrets plugin
+ * Register the simple-secrets token plugin
  */
 
-app.plugin(ss({
+app.plugin(token({
   key: env('ACCESS_TOKEN_KEY')
 }));
+
+/**
+ * Register the simple-secrets authcode plugin
+ */
+app.plugin(authcode({
+  key: env('AUTH_CODE_KEY')
+}, authcodeRedis({
+  url: env('AUTH_CODE_REDIS_URL')
+})));
 
 /**
  * Register the scrypt plugin
@@ -59,6 +69,19 @@ app.plugin(scrypt());
 app.plugin(scopes());
 
 /**
+ * Register the flokk plugin
+ */
+var api = app.plugin(flokk({
+  key: env('ACCESS_TOKEN_KEY'),
+  root: env('API_URL', 'https://api.theflokk.com'),
+  client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
+  scopes: env('AUTH_API_SCOPES', '').split(',')
+  // TODO setup cache
+  // get: function() {},
+  // set: function() {}
+}));
+
+/**
  * Register the facebook plugin
  */
 
@@ -67,46 +90,37 @@ app.plugin(facebook({
   clientSecret: env('FACEBOOK_CLIENT_SECRET'),
   callbackURL: env('FACEBOOK_CALLBACK_URL')
 }, function(accessToken, refreshToken, profile, done) {
-  db.getUserByFacebook(profile.id, function(err, user) {
-    if (err) return done(err);
-    if (user) return done(null, user);
-
-    db.createUser({
-      facebook: profile.id,
-      username: profile.username,
-      name: profile.displayName,
-      emails: profile.emails
-    }, done);
-  });
+  api.getUserByFacebook(profile, accessToken, refreshToken, done);
 }));
 
 /**
  * Register the google plugin
  */
 
-// app.plugin(google({
-//   returnURL: env('GOOGLE_RETURN_URL'),
-//   realm: env('GOOGLE_REALM')
-// }, function(identifier, profile, done) {
-//   db.getUserByGoogle(profile.id, function(err, user) {
-//     if (err) return done(err);
-//     if (user) return done(null, user);
-
-//     db.createUser({
-//       google: profile.id,
-//       username: profile.username,
-//       name: profile.displayName,
-//       emails: profile.emails
-//     }, done);
-//   });
-// }));
+app.plugin(google({
+  returnURL: env('GOOGLE_RETURN_URL'),
+  realm: env('GOOGLE_REALM')
+}, function(identifier, profile, done) {
+  api.getUserByGoogle(profile, identifier, done);
+}));
 
 /**
- * Register the database plugin
+ * Register the `isValidClientRedirectURI` callback
  */
-app.plugin(db({
-  url: env('DATABASE_URL')
-}));
+
+app.isValidClientRedirectURI(function(client, redirect_uri, done) {
+  // TODO should we do a fuzzy match?
+  // TODO should we break this out into its own lib?
+
+  var result = Array.isArray(client.redirect_uri)
+    ? ~client.redirect_uri.indexOf(redirect_uri)
+    : redirect_uri === client.redirect_uri
+  done(null, result);
+});
+
+// TODO implement userDecision callback
+
+// TODO implement saveUserDecision callback
 
 /**
  * Login view
@@ -130,6 +144,31 @@ app.authorizeView(function(req, res) {
 
 app.get('/signup', function(req, res, next) {
   res.render('signup', {title: 'Signup'});
+});
+
+/**
+ * Signup view
+ */
+
+app.post('/signup', function(req, res, next) {
+  // TODO should we have some kind of a welcome page?
+  // or should the UI handle that...
+
+  api.createUser(req.body, function(err, user) {
+    if (err) return next(err);
+
+    req.logIn(user, function(err) {
+      if (err) return next(err);
+
+      var returnTo = req.session.returnTo || res.locals.authorizePath;
+      // Delete it
+      delete req.session.returnTo;
+
+      // Redirect to where we came from
+      debug('user logged in; redirecting to', returnTo);
+      return res.redirect(returnTo);
+    });
+  });
 });
 
 /**

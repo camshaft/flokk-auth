@@ -23,11 +23,17 @@
     "jade": "~0.31.2",
     "superagent": "~0.14.7",
     "envs": "~0.1.1",
+    "consulate": "consulate/consulate",
     "consulate-facebook": "consulate/consulate-facebook",
     "consulate-google": "consulate/consulate-google",
-    "consulate": "consulate/consulate",
     "consulate-scrypt": "consulate/consulate-scrypt",
     "consulate-simple-secrets": "consulate/consulate-simple-secrets",
-    "consulate-scopes-env": "consulate/consulate-scopes-env"
+    "consulate-authcode-simple-secrets": "consulate/consulate-authcode-simple-secrets",
+    "consulate-authcode-simple-secrets-redis": "consulate/consulate-authcode-simple-secrets-redis",
+    "consulate-scopes-env": "consulate/consulate-scopes-env",
+    "simple-debug": "~1.1.0",
+    "metric-log": "~0.2.5",
+    "simple-secrets": "~1.0.0",
+    "bitfield": "CamShaft/bitfield"
   }
 }
