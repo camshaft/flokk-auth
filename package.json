@@ -23,6 +23,18 @@
     "passport-facebook": "~0.1.5",
     "component": "~0.16.3",
     "jade": "~0.31.2",
-    "superagent": "~0.14.7"
+    "superagent": "~0.14.9",
+    "consulate": "consulate/consulate",
+    "consulate-facebook": "consulate/consulate-facebook",
+    "consulate-google": "consulate/consulate-google",
+    "consulate-scrypt": "consulate/consulate-scrypt",
+    "consulate-simple-secrets": "consulate/consulate-simple-secrets",
+    "consulate-scopes-env": "git://github.com/consulate/consulate-scopes-env",
+    "consulate-authcode-simple-secrets": "git://github.com/consulate/consulate-authcode-simple-secrets",
+    "consulate-authcode-simple-secrets-redis": "git://github.com/consulate/consulate-authcode-simple-secrets-redis",
+    "envs": "~0.1.1",
+    "simple-debug": "~1.1.0",
+    "simple-secrets": "~1.0.0",
+    "bitfield": "~0.1.0"
   }
 }
