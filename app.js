@@ -5,12 +5,13 @@
 var stack = require('simple-stack-common')
   , consulate = require('consulate')
   , token = require('consulate-simple-secrets')
+  , validate = require('consulate-validate-redirect-uri')
   , authcode = require('consulate-authcode-simple-secrets')
   , authcodeRedis = require('consulate-authcode-simple-secrets-redis')
   , scrypt = require('consulate-scrypt')
+  , scopes = require('consulate-scopes-env')
   , facebook = require('consulate-facebook')
   , google = require('consulate-google')
-  , scopes = require('consulate-scopes-env')
   , flokk = require('./lib/api')
   , env = require('envs');
 
@@ -48,8 +49,15 @@ app.plugin(token({
 }));
 
 /**
+ * Register the validate redirect-uri plugin
+ */
+
+app.plugin(validate());
+
+/**
  * Register the simple-secrets authcode plugin
  */
+
 app.plugin(authcode({
   key: env('AUTH_CODE_KEY')
 }, authcodeRedis({
@@ -67,19 +75,6 @@ app.plugin(scrypt());
  */
 
 app.plugin(scopes());
-
-/**
- * Register the flokk plugin
- */
-var api = app.plugin(flokk({
-  key: env('ACCESS_TOKEN_KEY'),
-  root: env('API_URL', 'https://api.theflokk.com'),
-  client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
-  scopes: env('AUTH_API_SCOPES', '').split(',')
-  // TODO setup cache
-  // get: function() {},
-  // set: function() {}
-}));
 
 /**
  * Register the facebook plugin
@@ -105,22 +100,18 @@ app.plugin(google({
 }));
 
 /**
- * Register the `isValidClientRedirectURI` callback
+ * Register the flokk plugin
  */
 
-app.isValidClientRedirectURI(function(client, redirect_uri, done) {
-  // TODO should we do a fuzzy match?
-  // TODO should we break this out into its own lib?
-
-  var result = Array.isArray(client.redirect_uri)
-    ? ~client.redirect_uri.indexOf(redirect_uri)
-    : redirect_uri === client.redirect_uri
-  done(null, result);
-});
-
-// TODO implement userDecision callback
-
-// TODO implement saveUserDecision callback
+var api = app.plugin(flokk({
+  key: env('ACCESS_TOKEN_KEY'),
+  root: env('API_URL', 'https://api.theflokk.com'),
+  client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
+  scopes: env('AUTH_API_SCOPES', '').split(',')
+  // TODO setup cache
+  // get: function() {},
+  // set: function() {}
+}));
 
 /**
  * Login view

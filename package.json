@@ -28,6 +28,7 @@
     "consulate-google": "consulate/consulate-google",
     "consulate-scrypt": "consulate/consulate-scrypt",
     "consulate-simple-secrets": "consulate/consulate-simple-secrets",
+    "consulate-validate-redirect-uri": "consulate/consulate-validate-redirect-uri",
     "consulate-authcode-simple-secrets": "consulate/consulate-authcode-simple-secrets",
     "consulate-authcode-simple-secrets-redis": "consulate/consulate-authcode-simple-secrets-redis",
     "consulate-scopes-env": "consulate/consulate-scopes-env",
