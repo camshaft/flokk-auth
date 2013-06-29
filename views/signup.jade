@@ -2,12 +2,12 @@ extends layout
 
 block content
   .span6.offset3
-    form.form-signin.form-flokk(method="post", action=resolve("."))
+    form.form-signin.form-flokk(method="post", action=base+"/signup")
       h2 Signup
       p You're seconds away from something awesome.
       hr
       .social-login
-        a(href=resolve("login/facebook")).btn.btn-facebook Signup with Facebook
+        a(href=base+"/login/facebook").btn.btn-facebook Signup with Facebook
       hr
       input.input-block-level(type="email", placeholder="Email", name="email", required="true")
       input.input-block-level(type="password", placeholder="Password", name="password", required="true")
@@ -15,4 +15,4 @@ block content
       button.btn.btn-large.btn-action(type="submit") START FLOKKING
       hr
       p Already have an account? 
-        a(href=resolve(".")) Come on in!
+        a(href=base+loginPath) Come on in!

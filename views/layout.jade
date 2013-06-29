@@ -6,7 +6,7 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
     meta(name="author", content="The Flokk, LLC")
     meta(name="description", content="")
-    link(href=resolve("public/build.css"), rel="stylesheet")
+    link(href=base+"/public/build.css", rel="stylesheet")
   body
     #wrap
       #main.container
@@ -14,4 +14,4 @@ html(lang="en")
         block content
       #push
     footer
-    script(type="text/javascript", src=resolve("public/build.js"))
+    script(type="text/javascript", src=base+"/public/build.js")
