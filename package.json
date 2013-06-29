@@ -19,7 +19,7 @@
   "dependencies": {
     "simple-stack-common": "~0.1.6",
     "startup": "~0.1.12",
-    "component": "~0.16.5",
+    "component": "0.16.4",
     "jade": "~0.31.2",
     "superagent": "~0.14.7",
     "envs": "~0.1.1",
