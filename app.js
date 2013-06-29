@@ -194,6 +194,8 @@ server.use(app);
 /**
  * Handle errors gracefully
  */
+
 server.use(function errorRenderer(err, req, res, next) {
+  res.status(err.code || err.status || 500);
   res.render('error', {err: err, title: err.name});
 });
