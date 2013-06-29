@@ -18,5 +18,8 @@
   ],
   "styles": [
     "public/stylesheets/index.css"
+  ],
+  "images": [
+    "public/images/facebook.png"
   ]
 }
