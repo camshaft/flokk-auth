@@ -165,7 +165,14 @@ app.post('/signup', function(req, res, next) {
  * Expose the server
  */
 
-var server = module.exports = stack();
+var server = module.exports = stack({
+  base: {
+    host: 'x-orig-host',
+    path: 'x-orig-path',
+    port: 'x-orig-path',
+    proto: 'x-orig-proto'
+  }
+});
 
 /**
  * Expose the `base` to the view
