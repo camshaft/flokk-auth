@@ -98,7 +98,7 @@ app.plugin(facebook({
   clientSecret: env('FACEBOOK_CLIENT_SECRET'),
   callbackURL: env('FACEBOOK_CALLBACK_URL')
 }, function(accessToken, refreshToken, profile, done) {
-  api.getUserByFacebook(profile, accessToken, refreshToken, done);
+  api.userByFacebook(profile, accessToken, refreshToken, done);
 }));
 
 /**
@@ -109,7 +109,7 @@ app.plugin(google({
   returnURL: env('GOOGLE_RETURN_URL'),
   realm: env('GOOGLE_REALM')
 }, function(identifier, profile, done) {
-  api.getUserByGoogle(profile, identifier, done);
+  api.userByGoogle(profile, identifier, done);
 }));
 
 /**
