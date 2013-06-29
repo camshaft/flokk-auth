@@ -10,9 +10,10 @@ var stack = require('simple-stack-common')
   , authcodeRedis = require('consulate-authcode-simple-secrets-redis')
   , scrypt = require('consulate-scrypt')
   , scopes = require('consulate-scopes-env')
+  , flokk = require('./lib/api')
+  , cache = require('./lib/cache')
   , facebook = require('consulate-facebook')
   , google = require('consulate-google')
-  , flokk = require('./lib/api')
   , env = require('envs');
 
 /**
@@ -77,6 +78,18 @@ app.plugin(scrypt());
 app.plugin(scopes());
 
 /**
+ * Register the flokk plugin
+ */
+
+var api = app.plugin(flokk({
+  key: env('ACCESS_TOKEN_KEY'),
+  root: env('API_URL', 'https://api.theflokk.com'),
+  client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
+  scopes: env('AUTH_API_SCOPES', '').split(','),
+  cache: cache(env('API_CACHE_URL'))
+}));
+
+/**
  * Register the facebook plugin
  */
 
@@ -97,20 +110,6 @@ app.plugin(google({
   realm: env('GOOGLE_REALM')
 }, function(identifier, profile, done) {
   api.getUserByGoogle(profile, identifier, done);
-}));
-
-/**
- * Register the flokk plugin
- */
-
-var api = app.plugin(flokk({
-  key: env('ACCESS_TOKEN_KEY'),
-  root: env('API_URL', 'https://api.theflokk.com'),
-  client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
-  scopes: env('AUTH_API_SCOPES', '').split(',')
-  // TODO setup cache
-  // get: function() {},
-  // set: function() {}
 }));
 
 /**

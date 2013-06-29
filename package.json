@@ -35,6 +35,8 @@
     "simple-debug": "~1.1.0",
     "metric-log": "~0.2.5",
     "simple-secrets": "~1.0.0",
-    "bitfield": "CamShaft/bitfield"
+    "bitfield": "CamShaft/bitfield",
+    "redis": "~0.8.4",
+    "redisurl": "~0.1.1"
   }
 }
