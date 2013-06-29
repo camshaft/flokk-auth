@@ -189,7 +189,7 @@ server.use('/public', 'assets', stack.middleware.static(__dirname+'/build'));
  * Mount the consulate app
  */
 
-server.use(app);
+server.replace('router', app);
 
 /**
  * Handle errors gracefully
