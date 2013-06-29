@@ -171,7 +171,7 @@ var server = module.exports = stack();
  * Expose the `base` to the view
  */
 
-server.use(function localBase(req, res, next) {
+server.useBefore('router', function localBase(req, res, next) {
   res.locals.base = req.base;
   res.locals.resolve = req.resolve;
   next();
@@ -183,7 +183,7 @@ server.use(function localBase(req, res, next) {
  * @todo only serve in development, come up with a cdn strategy
  */
 
-server.use('/public', 'assets', stack.middleware.static(__dirname+'/build'));
+server.useBefore('router', '/public', 'assets', stack.middleware.static(__dirname+'/build'));
 
 /**
  * Mount the consulate app
