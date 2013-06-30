@@ -82,7 +82,6 @@ app.plugin(scopes());
  */
 
 var api = app.plugin(flokk({
-  key: env('ACCESS_TOKEN_KEY'),
   root: env('API_URL', 'https://api.theflokk.com'),
   client_id: env('AUTH_CLIENT_ID', 'flokk-auth'),
   scopes: env('AUTH_API_SCOPES', '').split(','),
