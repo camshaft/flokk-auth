@@ -2,7 +2,8 @@
  * Module exports
  */
 
-var stack = require('simple-stack-common')
+var debug = require('simple-debug')('flokk-auth')
+  , stack = require('simple-stack-common')
   , consulate = require('consulate')
   , token = require('consulate-simple-secrets')
   , validate = require('consulate-validate-redirect-uri')

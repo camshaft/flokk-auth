@@ -35,6 +35,7 @@
     "simple-debug": "~1.1.0",
     "metric-log": "~0.2.5",
     "redis": "~0.8.4",
-    "redisurl": "~0.1.1"
+    "redisurl": "~0.1.1",
+    "scrypt": "~1.5.3"
   }
 }
