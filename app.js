@@ -162,6 +162,15 @@ app.post('/signup', function(req, res, next) {
 });
 
 /**
+ * Logout of flokk
+ */
+
+app.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect(env('SITE_URL', 'https://www.theflokk.com'));
+});
+
+/**
  * Expose the server
  */
 
