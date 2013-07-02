@@ -23,7 +23,7 @@
     "jade": "~0.31.2",
     "superagent": "~0.14.7",
     "envs": "~0.1.1",
-    "consulate": "consulate/consulate",
+    "consulate": "consulate/consulate#get-save-user-decision-cb",
     "consulate-facebook": "consulate/consulate-facebook",
     "consulate-google": "consulate/consulate-google",
     "consulate-scrypt": "consulate/consulate-scrypt",
