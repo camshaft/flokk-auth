@@ -178,7 +178,7 @@ var server = module.exports = stack({
   base: {
     host: 'x-orig-host',
     path: 'x-orig-path',
-    port: 'x-orig-path',
+    port: 'x-orig-port',
     proto: 'x-orig-proto'
   }
 });
