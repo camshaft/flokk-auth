@@ -96,7 +96,8 @@ var api = app.plugin(flokk({
 app.plugin(facebook({
   clientID: env('FACEBOOK_CLIENT_ID'),
   clientSecret: env('FACEBOOK_CLIENT_SECRET'),
-  callbackURL: env('FACEBOOK_CALLBACK_URL')
+  callbackURL: env('FACEBOOK_CALLBACK_URL'),
+  authOpts: { scope: ['email', 'user_birthday'] }
 }, function(accessToken, refreshToken, profile, done) {
   api.userByFacebook(profile, accessToken, refreshToken, done);
 }));
