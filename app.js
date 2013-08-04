@@ -76,7 +76,9 @@ app.plugin(scrypt());
  * Register the scopes plugin
  */
 
-app.plugin(scopes());
+app.plugin(scopes({
+  placeholder: '_'
+}));
 
 /**
  * Register the flokk plugin
