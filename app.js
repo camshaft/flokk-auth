@@ -226,6 +226,9 @@ server.useBefore('router', function locals(req, res, next) {
   res.locals.base = req.base;
   res.locals.resolve = req.resolve;
   res.locals.site = req.get('x-ui-url') || env('SITE_URL', 'https://www.theflokk.com');
+  res.locals.facebook = req.get('x-env') === 'production'
+    ? '/facebook'
+    : '/facebook-alt';
   next();
 });
 
