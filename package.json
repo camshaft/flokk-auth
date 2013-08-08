@@ -37,6 +37,7 @@
     "redis": "~0.8.4",
     "redisurl": "~0.1.1",
     "scrypt": "~1.5.3",
-    "theme-origami": "git://github.com/flokk/theme-origami"
+    "theme-origami": "git://github.com/flokk/theme-origami",
+    "passport-oauth": "~0.1.15"
   }
 }

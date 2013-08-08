@@ -38,7 +38,6 @@ app.set('view engine', 'jade');
  */
 
 app.locals({
-  site: env('SITE_URL', 'https://www.theflokk.com'),
   dev: env('NODE_ENV') === 'development'
 });
 
@@ -92,17 +91,50 @@ var api = app.plugin(flokk({
 }));
 
 /**
+ * Patch the original url method in passport-oauth so we can use relative urls with `req.base`
+ */
+
+require('passport-oauth/lib/passport-oauth/strategies/utils').originalURL = function(req) {
+  return req.base;
+};
+
+/**
  * Register the facebook plugin
  */
 
 app.plugin(facebook({
   clientID: env('FACEBOOK_CLIENT_ID'),
   clientSecret: env('FACEBOOK_CLIENT_SECRET'),
-  callbackURL: env('FACEBOOK_CALLBACK_URL'),
-  authOpts: { scope: ['email', 'user_birthday'] }
-}, function(accessToken, refreshToken, profile, done) {
-  api.userByFacebook(profile, accessToken, refreshToken, done);
-}));
+  path: '/login/facebook',
+  authOpts: { scope: ['email', 'user_birthday'] },
+  name: 'facebook-prod',
+  passReqToCallback: true
+}, userByFacebook));
+
+/**
+ * Register an alternative facebook plugin for test environments
+ */
+
+if (env('FACEBOOK_CLIENT_ID_ALT')) {
+  app.plugin(facebook({
+    clientID: env('FACEBOOK_CLIENT_ID_ALT'),
+    clientSecret: env('FACEBOOK_CLIENT_SECRET_ALT'),
+    path: '/login/facebook-alt',
+    authOpts: { scope: ['email', 'user_birthday'] },
+    name: 'facebook-alt',
+    passReqToCallback: true
+  }, userByFacebook));
+}
+
+/**
+ * Get or create a user by their facebook id
+ *
+ * @api private
+ */
+
+function userByFacebook(req, accessToken, refreshToken, profile, done) {
+  api.userByFacebook(req.get('x-api-url'), profile, accessToken, refreshToken, done);
+};
 
 /**
  * Register the google plugin
@@ -147,7 +179,7 @@ app.post('/signup', function(req, res, next) {
   // TODO should we have some kind of a welcome page?
   // or should the UI handle that...
 
-  api.createUser(req.body, function(err, user) {
+  api.createUser(req.body, req.get('x-api-url'), function(err, user) {
     if (err) return next(err);
 
     req.logIn(user, function(err) {
@@ -170,7 +202,7 @@ app.post('/signup', function(req, res, next) {
 
 app.get('/logout', function(req, res, next) {
   req.logout();
-  res.redirect(env('SITE_URL', 'https://www.theflokk.com'));
+  res.redirect(res.locals.site);
 });
 
 /**
@@ -187,12 +219,13 @@ var server = module.exports = stack({
 });
 
 /**
- * Expose the `base` to the view
+ * Expose the request locals to the view
  */
 
-server.useBefore('router', function localBase(req, res, next) {
+server.useBefore('router', function locals(req, res, next) {
   res.locals.base = req.base;
   res.locals.resolve = req.resolve;
+  res.locals.site = req.get('x-ui-url') || env('SITE_URL', 'https://www.theflokk.com');
   next();
 });
 
