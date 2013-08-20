@@ -179,7 +179,7 @@ app.post('/signup', function(req, res, next) {
   // TODO should we have some kind of a welcome page?
   // or should the UI handle that...
 
-  api.createUser(req.body, req.get('x-api-url'), function(err, user) {
+  api.createUser(req.get('x-api-url'), req.body, function(err, user) {
     if (err) return next(err);
 
     req.logIn(user, function(err) {
