@@ -1,1 +1,1 @@
-web: node_modules/.bin/startup start --cluster
+web: node_modules/.bin/startup start
