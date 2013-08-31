@@ -2,20 +2,20 @@
  * Module exports
  */
 
-var debug = require('simple-debug')('flokk-auth')
-  , stack = require('simple-stack-common')
-  , consulate = require('consulate')
-  , token = require('consulate-simple-secrets')
-  , validate = require('consulate-validate-redirect-uri')
-  , authcode = require('consulate-authcode-simple-secrets')
-  , authcodeRedis = require('consulate-authcode-simple-secrets-redis')
-  , scrypt = require('consulate-scrypt')
-  , scopes = require('consulate-scopes-env')
-  , flokk = require('./lib/api')
-  , cache = require('./lib/cache')
-  , facebook = require('consulate-facebook')
-  , google = require('consulate-google')
-  , env = require('envs');
+var debug = require('simple-debug')('flokk-auth');
+var stack = require('simple-stack-common');
+var consulate = require('consulate');
+var token = require('consulate-simple-secrets');
+var validate = require('consulate-validate-redirect-uri');
+var authcode = require('consulate-authcode-simple-secrets');
+var authcodeRedis = require('consulate-authcode-simple-secrets-redis');
+var scrypt = require('consulate-scrypt');
+var scopes = require('consulate-scopes-env');
+var flokk = require('./lib/api');
+var cache = require('./lib/cache');
+var facebook = require('consulate-facebook');
+var google = require('consulate-google');
+var env = require('envs');
 
 /**
  * Create a consulate server
@@ -179,7 +179,13 @@ app.post('/signup', function(req, res, next) {
   // TODO should we have some kind of a welcome page?
   // or should the UI handle that...
 
-  api.createUser(req.get('x-api-url'), req.body, function(err, user) {
+  var form = {
+    username: req.body.username,
+    password: req.body.password,
+    name: req.body.name
+  };
+
+  api.createUser(req.get('x-api-url'), form, function(err, user) {
     if (err) return next(err);
 
     req.logIn(user, function(err) {
