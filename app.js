@@ -13,9 +13,11 @@ var scrypt = require('consulate-scrypt');
 var scopes = require('consulate-scopes-env');
 var flokk = require('./lib/api');
 var cache = require('./lib/cache');
+var mail = require('./lib/mail');
 var facebook = require('consulate-facebook');
 var google = require('consulate-google');
 var env = require('envs');
+var ss = require('simple-secrets');
 
 /**
  * Create a consulate server
@@ -32,6 +34,18 @@ var app = consulate({
  */
 
 app.set('view engine', 'jade');
+
+/**
+ * Initialize the Mandrill client
+ */
+
+mail.init(env('MANDRILL_KEY'));
+
+/**
+ * Initialize the signup simple-secrets
+ */
+
+var signup = ss(new Buffer(env('SIGNUP_SECRET'), 'hex'));
 
 /**
  * Expose the site url to the views
@@ -176,11 +190,8 @@ app.get('/signup', function(req, res, next) {
  */
 
 app.post('/signup', function(req, res, next) {
-  // TODO should we have some kind of a welcome page?
-  // or should the UI handle that...
-
   var form = {
-    username: req.body.username,
+    email: req.body.email,
     password: req.body.password,
     name: req.body.name
   };
@@ -195,10 +206,44 @@ app.post('/signup', function(req, res, next) {
       // Delete it
       delete req.session.returnTo;
 
+      res.redirect(returnTo);
+
       // Redirect to where we came from
       debug('user logged in; redirecting to', returnTo);
-      return res.redirect(returnTo);
+
+      var confirmation = req.base + '/confirm?code=' + signup.pack({
+        id: user.id,
+        date: Date.now()
+      });
+
+      mail('signup')
+        .to(form.email, form.name)
+        .set({
+          name: form.name || form.email,
+          confirmation: confirmation
+        })
+        .end(function(err, res) {
+          if (err) console.error(err);
+          if (res.error) console.error(new Error(res.text));
+        });
     });
+  });
+});
+
+/**
+ * Expose confirmation url
+ */
+
+app.get('/confirm', function(req, res, next) {
+  if (!req.query.code) return next(new Error('Missing confirmation code'));
+  var info = signup.unpack(req.query.code);
+  if (!info) return next(new Error('Invalid confirmation code'));
+
+  // TODO report the time it took for people to confirm their account
+
+  api.confirmUser(req.get('x-api-url'), info.id, function(err) {
+    if (err) return next(err);
+    res.render('confirm');
   });
 });
 
