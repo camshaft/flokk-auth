@@ -1,8 +1,11 @@
 extends layout
 
 block content
+  script.
+    mixpanel.track_forms('#signup', 'signup');
+
   .span6.offset3
-    form.form-signin.form-flokk(method="post", action=base+"/signup")
+    form#signup.form-signin.form-flokk(method="post", action=base+"/signup")
       h2 Signup
       p You're seconds away from something awesome.
       hr

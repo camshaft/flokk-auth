@@ -1,8 +1,11 @@
 extends layout
 
 block content
+  script.
+    mixpanel.track_forms('#login', 'login');
+
   .span6.offset3
-    form.form-signin.form-flokk(method="post", action=base+loginPath)
+    form#login.form-signin.form-flokk(method="post", action=base+loginPath)
       h2 Login
       p Pick an item. Start a sale. Whenever you want. Seriously.
       hr
