@@ -52,7 +52,8 @@ var signup = ss(new Buffer(env('SIGNUP_SECRET'), 'hex'));
  */
 
 app.locals({
-  dev: env('NODE_ENV') === 'development'
+  dev: env('NODE_ENV') === 'development',
+  mixpanel: env('MIXPANEL_KEY')
 });
 
 /**
