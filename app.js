@@ -181,7 +181,7 @@ app.authorizeView(function(req, res) {
  * Signup view
  */
 
-app.get('/signup', function(req, res, next) {
+app.get('/register', function(req, res, next) {
   res.render('signup', {title: 'Signup'});
 });
 
@@ -189,7 +189,7 @@ app.get('/signup', function(req, res, next) {
  * Signup view
  */
 
-app.post('/signup', function(req, res, next) {
+app.post('/register', function(req, res, next) {
   var form = {
     email: req.body.email,
     password: req.body.password,
